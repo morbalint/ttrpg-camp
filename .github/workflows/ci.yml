@@ -38,7 +38,7 @@ jobs:
           context: .
           file: "src/TtrpgCamp.App.Client/Dockerfile"
           load: true
-          push: ${{ env.PUSH_INTERMEDIARY_IMAGES }}
+          push: false
           tags: "client:${{ github.sha }}"
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -50,7 +50,7 @@ jobs:
           build-args: |
             BASE_IMAGE=client:${{ github.sha }}
           tags: "app:${{ github.sha }}"
-          push: ${{ env.PUSH_INTERMEDIARY_IMAGES }}
+          push: false
           load: true
           pull: false
           cache-from: type=gha
@@ -65,7 +65,7 @@ jobs:
             BASE_IMAGE=client:${{ github.sha }}
           tags: "client-test:${{ github.sha }}"
           load: true
-          push: ${{ env.PUSH_INTERMEDIARY_IMAGES }}
+          push: false
           pull: false
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -81,7 +81,7 @@ jobs:
             BASE_IMAGE=app:${{ github.sha }}
           tags: "app-test:${{ github.sha }}"
           load: true
-          push: ${{ env.PUSH_INTERMEDIARY_IMAGES }}
+          push: false
           pull: false
           cache-from: type=gha
           cache-to: type=gha,mode=max
