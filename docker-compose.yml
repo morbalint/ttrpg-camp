@@ -1,0 +1,7 @@
+﻿services:
+  ttrpgcamp.app:
+    build:
+      context: .
+      dockerfile: src/TtrpgCamp.App/Dockerfile
+    ports:
+      - "8080:8080"
