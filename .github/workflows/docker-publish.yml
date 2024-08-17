@@ -131,6 +131,7 @@ jobs:
           build-args: |
             BASE_IMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-client:${{ github.sha }}
           tags: "client-test:${{ github.sha }}"
+          load: 'true'
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Run tests
@@ -171,6 +172,7 @@ jobs:
           build-args: |
             BASE_IMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-app:${{ github.sha }}
           tags: "app-test:${{ github.sha }}"
+          load: 'true'
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Run tests
@@ -179,6 +181,7 @@ jobs:
   publish:
     needs: 
       - test-client
+      - test-app
     runs-on: ubuntu-latest
     permissions:
       contents: read
