@@ -1,5 +1,7 @@
-using TtrpgCamp.App.Client.Pages;
+using Microsoft.EntityFrameworkCore;
+using ClientImports = TtrpgCamp.App.Client._Imports;
 using TtrpgCamp.App.Components;
+using TtrpgCamp.App.Db;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,12 +10,18 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
+var connectionString = builder.Configuration.GetConnectionString("main");
+builder.Services.AddDbContext<TtrpgCampDbContext>(dbBuilder => dbBuilder.UseNpgsql(connectionString));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseWebAssemblyDebugging();
+    app.UseDeveloperExceptionPage();
+    using var scope = app.Services.CreateScope();
+    scope.ServiceProvider.GetRequiredService<TtrpgCampDbContext>().Database.Migrate();
 }
 else
 {
@@ -30,6 +38,6 @@ app.UseAntiforgery();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(typeof(TtrpgCamp.App.Client._Imports).Assembly);
+    .AddAdditionalAssemblies(typeof(ClientImports).Assembly);
 
 app.Run();
