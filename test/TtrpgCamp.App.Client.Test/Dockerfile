@@ -7,6 +7,6 @@ COPY ["test/TtrpgCamp.App.Client.Test/packages.lock.json", "test/TtrpgCamp.App.C
 RUN dotnet restore --locked-mode "test/TtrpgCamp.App.Client.Test/TtrpgCamp.App.Client.Test.csproj"
 COPY . .
 WORKDIR "/workspace/test/TtrpgCamp.App.Client.Test"
-RUN dotnet build "TtrpgCamp.App.Client.Test.csproj" -c $BUILD_CONFIGURATION
+RUN dotnet build --no-restore "TtrpgCamp.App.Client.Test.csproj" -c $BUILD_CONFIGURATION
 
 ENTRYPOINT ["dotnet", "test", "--no-build", "TtrpgCamp.App.Client.Test.csproj"]
