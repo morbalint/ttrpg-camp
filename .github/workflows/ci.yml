@@ -53,6 +53,7 @@ jobs:
           tags: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-app:${{ github.sha }}"
           push: ${{ env.PUSH_INTERMEDIARY_IMAGES }}
           load: true
+          pull: false
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Build Client Unit Test Docker image
@@ -65,6 +66,7 @@ jobs:
           tags: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-client-test:${{ github.sha }}"
           load: true
           push: ${{ env.PUSH_INTERMEDIARY_IMAGES }}
+          pull: false
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Run client unit tests
@@ -79,6 +81,7 @@ jobs:
           tags: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-app-test:${{ github.sha }}"
           load: true
           push: ${{ env.PUSH_INTERMEDIARY_IMAGES }}
+          pull: false
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Run App unit tests
@@ -109,7 +112,8 @@ jobs:
           context: .
           build-args: |
             BASE_IMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-app:${{ github.sha }}
-          push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ github.event_name != 'pull_request' }
+          pull: false
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
