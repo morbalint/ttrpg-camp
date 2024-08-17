@@ -7,16 +7,17 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /workspace
+COPY ["src/TtrpgCamp.App/packages.lock.json", "src/TtrpgCamp.App/"]
+COPY ["src/TtrpgCamp.App.Client/packages.lock.json", "src/TtrpgCamp.App.Client/"]
 COPY ["src/TtrpgCamp.App/TtrpgCamp.App.csproj", "src/TtrpgCamp.App/"]
 COPY ["src/TtrpgCamp.App.Client/TtrpgCamp.App.Client.csproj", "src/TtrpgCamp.App.Client/"]
 RUN dotnet restore "src/TtrpgCamp.App/TtrpgCamp.App.csproj"
 COPY . .
-WORKDIR "/workspace/src/TtrpgCamp.App"
-RUN dotnet build "TtrpgCamp.App.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build --no-restore "src/TtrpgCamp.App/TtrpgCamp.App.csproj" -c $BUILD_CONFIGURATION
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "TtrpgCamp.App.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish --no-build "src/TtrpgCamp.App/TtrpgCamp.App.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
