@@ -16,6 +16,9 @@
     
     <ItemGroup>
       <Content Remove="packages.lock.json" />
+      <Content Include="..\..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>

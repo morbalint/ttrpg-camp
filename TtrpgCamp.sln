@@ -9,6 +9,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		docker-compose.yml = docker-compose.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TtrpgCamp.App.Test", "test\TtrpgCamp.App.Test\TtrpgCamp.App.Test.csproj", "{1168138B-882C-4EBC-8716-FEB19CC1F4CA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{706A287E-85DE-4FA7-8E6E-3452004B0759}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{999373E9-F7BA-4F17-A91B-B039851D222D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TtrpgCamp.App.Client.Test", "test\TtrpgCamp.App.Client.Test\TtrpgCamp.App.Client.Test.csproj", "{7BE64167-BAC8-4E43-B225-9B6525BD7751}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,5 +31,19 @@ Global
 		{8F09003D-4EB4-4B45-BCFE-4350F2C86C22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F09003D-4EB4-4B45-BCFE-4350F2C86C22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F09003D-4EB4-4B45-BCFE-4350F2C86C22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1168138B-882C-4EBC-8716-FEB19CC1F4CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1168138B-882C-4EBC-8716-FEB19CC1F4CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1168138B-882C-4EBC-8716-FEB19CC1F4CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1168138B-882C-4EBC-8716-FEB19CC1F4CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BE64167-BAC8-4E43-B225-9B6525BD7751}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BE64167-BAC8-4E43-B225-9B6525BD7751}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BE64167-BAC8-4E43-B225-9B6525BD7751}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BE64167-BAC8-4E43-B225-9B6525BD7751}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{11E1BFB5-5A97-4194-AE6C-048181CE1F7A} = {706A287E-85DE-4FA7-8E6E-3452004B0759}
+		{8F09003D-4EB4-4B45-BCFE-4350F2C86C22} = {706A287E-85DE-4FA7-8E6E-3452004B0759}
+		{1168138B-882C-4EBC-8716-FEB19CC1F4CA} = {999373E9-F7BA-4F17-A91B-B039851D222D}
+		{7BE64167-BAC8-4E43-B225-9B6525BD7751} = {999373E9-F7BA-4F17-A91B-B039851D222D}
 	EndGlobalSection
 EndGlobal
