@@ -112,7 +112,7 @@ jobs:
           context: .
           build-args: |
             BASE_IMAGE=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-app:${{ github.sha }}
-          push: ${{ github.event_name != 'pull_request' }
+          push: ${{ github.event_name != 'pull_request' }}
           pull: false
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
