@@ -1,4 +1,20 @@
-﻿@inherits LayoutComponentBase
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Components.Authorization
+@inherits LayoutComponentBase
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+@code {
+
+    ClaimsPrincipal? ClaimsPrincipalUser;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        ClaimsPrincipalUser = authState.User;
+    }
+}
+
 
 <div class="page">
     <div class="sidebar">
@@ -7,7 +23,15 @@
 
     <main>
         <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+            @if (ClaimsPrincipalUser?.Identity?.IsAuthenticated != true)
+            {
+                <NavLink href="Identity/Account/Login">Login</NavLink>
+            }
+            else
+            {
+                <NavLink href="Identity/Account/Logout">Logout from @ClaimsPrincipalUser.Identity.Name </NavLink>
+            }
+            
         </div>
 
         <article class="content px-4">

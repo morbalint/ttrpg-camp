@@ -7,6 +7,9 @@ using TtrpgCamp.App.Db.Entities;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHealthChecks();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddLogging();
+builder.Services.AddHttpLogging(_ => {});
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
