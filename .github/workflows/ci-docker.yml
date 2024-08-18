@@ -6,13 +6,14 @@ name: Docker
 # documentation.
 
 on:
-  push:
-    branches: [ "dev" ]
-    # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
-  pull_request:
-    branches: [ "dev" ]
-
+#  push:
+#    branches: [ "dev" ]
+#    # Publish semver tags as releases.
+#    tags: [ 'v*.*.*' ]
+#  pull_request:
+#    branches: [ "dev" ]
+  workflow_dispatch: 
+  
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
