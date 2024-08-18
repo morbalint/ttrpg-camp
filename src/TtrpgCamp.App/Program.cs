@@ -6,6 +6,8 @@ using TtrpgCamp.App.Db.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddHealthChecks();
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
@@ -39,9 +41,14 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
 
+app.MapHealthChecks("/healthz");
+
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(ClientImports).Assembly);
+
+app.MapIdentityApi<TtrpgCampUser>();
+app.MapRazorPages();
 
 app.Run();
