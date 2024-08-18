@@ -42,7 +42,7 @@ jobs:
       - name: Run Tests
         run: dotnet test -c Release --no-build
       - name: Dotnet Publish
-        run: dotnet publish -c Release --no-build src/TtrpgCamp.App/TtrpgCamp.App.csproj -o bin/
+        run: dotnet publish -c Release --no-build src/TtrpgCamp.App/TtrpgCamp.App.csproj -o publish/
       
 
       - name: Set up Docker Buildx
