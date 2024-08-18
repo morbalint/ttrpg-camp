@@ -3,6 +3,7 @@ FROM $BASE_IMAGE AS build
 
 WORKDIR /workspace
 
+COPY ["test/Directory.Build.props", "test/"]
 COPY ["test/TtrpgCamp.App.Client.Test/TtrpgCamp.App.Client.Test.csproj", "test/TtrpgCamp.App.Client.Test/"]
 COPY ["test/TtrpgCamp.App.Client.Test/packages.lock.json", "test/TtrpgCamp.App.Client.Test/"]
 RUN dotnet restore --locked-mode "test/TtrpgCamp.App.Client.Test/TtrpgCamp.App.Client.Test.csproj"

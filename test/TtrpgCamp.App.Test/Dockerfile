@@ -2,6 +2,7 @@
 FROM $BASE_IMAGE AS build
 WORKDIR /workspace
 
+COPY ["test/Directory.Build.props", "test/"]
 COPY ["test/TtrpgCamp.App.Test/TtrpgCamp.App.Test.csproj", "test/TtrpgCamp.App.Test/"]
 COPY ["test/TtrpgCamp.App.Test/packages.lock.json", "test/TtrpgCamp.App.Test/"]
 
