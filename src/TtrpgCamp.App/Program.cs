@@ -2,8 +2,14 @@ using Microsoft.EntityFrameworkCore;
 using ClientImports = TtrpgCamp.App.Client._Imports;
 using TtrpgCamp.App.Components;
 using TtrpgCamp.App.Db;
+using TtrpgCamp.App.Db.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddHealthChecks();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddLogging();
+builder.Services.AddHttpLogging(_ => {});
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
@@ -12,6 +18,9 @@ builder.Services.AddRazorComponents()
 
 var connectionString = builder.Configuration.GetConnectionString("main");
 builder.Services.AddDbContext<TtrpgCampDbContext>(dbBuilder => dbBuilder.UseNpgsql(connectionString));
+
+builder.Services.AddDefaultIdentity<TtrpgCampUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<TtrpgCampDbContext>();
 
 var app = builder.Build();
 
@@ -35,9 +44,14 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
 
+app.MapHealthChecks("/healthz");
+
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(ClientImports).Assembly);
+
+app.MapIdentityApi<TtrpgCampUser>();
+app.MapRazorPages();
 
 app.Run();
