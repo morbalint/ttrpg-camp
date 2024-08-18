@@ -4,5 +4,5 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-COPY /publish .
+COPY publish/ .
 ENTRYPOINT ["dotnet", "TtrpgCamp.App.dll"]
