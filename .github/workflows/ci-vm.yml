@@ -35,11 +35,7 @@ jobs:
           cache: true
           dotnet-version: 8.0
       - name: Dotnet restore
-        run: |
-          dotnet restore --locked-mode src/TtrpgCamp.App.Client/TtrpgCamp.App.Client.csproj
-          dotnet restore --locked-mode src/TtrpgCamp.App/TtrpgCamp.App.csproj
-          dotnet restore --locked-mode test/TtrpgCamp.App.Client.Test/TtrpgCamp.App.Client.Test.csproj
-          dotnet restore --locked-mode test/TtrpgCamp.App.Test/TtrpgCamp.App.Test.csproj
+        run: dotnet restore --locked-mode
       - name: Dotnet build
         run: dotnet build -c Release --no-restore
       - name: Run Tests
