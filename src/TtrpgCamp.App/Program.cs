@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using ClientImports = TtrpgCamp.App.Client._Imports;
 using TtrpgCamp.App.Components;
 using TtrpgCamp.App.Db;
+using TtrpgCamp.App.Db.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,9 @@ builder.Services.AddRazorComponents()
 
 var connectionString = builder.Configuration.GetConnectionString("main");
 builder.Services.AddDbContext<TtrpgCampDbContext>(dbBuilder => dbBuilder.UseNpgsql(connectionString));
+
+builder.Services.AddDefaultIdentity<TtrpgCampUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<TtrpgCampDbContext>();
 
 var app = builder.Build();
 
