@@ -1,0 +1,175 @@
+@page "/participants/edit/{id:guid}"
+@rendermode RenderMode.InteractiveServer
+
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Authorization
+@using TtrpgCamp.App.Db.Entities
+@using TtrpgCamp.App.Participants.Services
+
+@attribute [Authorize]
+
+@inject NavigationManager NavigationManager;
+@inject ILogger<Edit> Logger;
+@inject IParticipantLoader Loader;
+@inject IParticipantEditor Editor;
+@inject IParticipantDeleter Deleter;
+
+<PageTitle>Edit Participant</PageTitle>
+
+@code {
+    
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private Participant? _model;
+    
+    private string? _nameError;
+    private string? _emailError;
+
+    private volatile bool _loading;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _model = await Loader.GetParticipantAsync(Id);
+    }
+    
+    private void OnNameChanged(ChangeEventArgs obj)
+    {
+        _model!.Name = obj.Value?.ToString() ?? "";
+        ValidateName();
+    }
+
+    private bool ValidateName()
+    {
+        if (string.IsNullOrWhiteSpace(_model?.Name))
+        {
+            _nameError = "Name thyself!";
+            return false;
+        }
+        _emailError = null;
+        return true;
+    }
+
+    private void OnEmailChanged(ChangeEventArgs obj)
+    {
+        _model!.Email = obj.Value?.ToString() ?? "";
+        ValidateEmail();
+    }
+
+    private bool ValidateEmail()
+    {
+        if (string.IsNullOrWhiteSpace(_model?.Email))
+        {
+            _emailError = "We stopped using pigeons to deliver our mail!";
+            return false;
+        }
+        _emailError = null;
+        return true;
+    }
+
+    private void OnPhoneChanged(ChangeEventArgs obj)
+    {
+        _model!.Phone = obj.Value?.ToString() ?? "";
+    }
+
+    private bool ValidateModel()
+    {
+        var valid = true;
+        valid &= ValidateName();
+        valid &= ValidateEmail();
+        return valid;
+    }
+    
+    private async void OnSubmit()
+    {
+        try
+        {
+            _loading = true;
+            if (_model != null && ValidateModel())
+            {
+                await Editor.Edit(_model);
+                NavigationManager.NavigateTo("participants/index");
+            }
+        }
+        catch (Exception e)
+        {
+            Logger.LogError(e, "Failed to edit participant {participant}", _model);
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+    
+    private async void DeleteParticipant()
+    {
+        try
+        {
+            _loading = true;
+            await Deleter.DeleteAsync(_model!);
+            NavigationManager.NavigateTo("/participants/index");
+        }
+        catch (Exception e)
+        {
+            Logger.LogError(e, "failed to delete participant with ID='{id}'", Id);
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+}
+
+<h3>Edit Participant</h3>
+
+@if (_model == null)
+{
+    <p>Participant is still loading or not found!</p>
+}
+else
+{
+    <dl class="row">
+        <dt class="col-sm-2">
+            ID
+        </dt>
+        <dd class="col-sm-10">
+            @_model.Id
+        </dd>
+    </dl>
+    <div class="row">
+        <div class="col-md-4">
+            <form @onsubmit="OnSubmit">
+                <div class="form-group">
+                    <label class="control-label">Name</label>
+                    <input class="form-control" @onchange="OnNameChanged" value="@_model.Name"/>
+                    @if (_nameError != null)
+                    {
+                        <span class="text-danger">@_nameError</span>
+                    }
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Email</label>
+                    <input class="form-control" @onchange="OnEmailChanged" value="@_model.Email" />
+                    @if (_emailError != null)
+                    {
+                        <span class="text-danger">@_emailError</span>
+                    }
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Phone</label>
+                    <input class="form-control" @onchange="OnPhoneChanged" value="@_model.Phone" />
+                </div>
+                <div class="form-group mt-2">
+                    <button type="submit" disabled="@_loading" class="btn btn-primary">Edit Participant</button>
+                    |
+                    <button type="button" @onclick="DeleteParticipant" disabled="@_loading" class="btn btn-danger">Delete Participant</button>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
+<div class="row mt-4">
+    <a href="participants/index">Back to List</a>
+</div>

@@ -5,7 +5,8 @@ using TtrpgCamp.App.Db.Entities;
 
 namespace TtrpgCamp.App.Db;
 
-public class TtrpgCampDbContext(DbContextOptions<TtrpgCampDbContext> options) : IdentityDbContext<TtrpgCampUser>(options)
+public class TtrpgCampDbContext(DbContextOptions<TtrpgCampDbContext> options) : 
+    IdentityDbContext<TtrpgCampUser, TtrpgCampRole, string>(options)
 {
     public DbSet<Participant> Participants { get; set; }
     

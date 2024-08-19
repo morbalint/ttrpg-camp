@@ -6,7 +6,7 @@
 @using TtrpgCamp.App.Participants.Dtos
 @using TtrpgCamp.App.Participants.Services
 
-@attribute [Authorize]
+@attribute [Authorize(Roles = "admin")]
 
 @inject NavigationManager NavigationManager
 @inject ILogger<Create> Logger;

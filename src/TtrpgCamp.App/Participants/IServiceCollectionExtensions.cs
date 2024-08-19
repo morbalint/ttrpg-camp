@@ -10,6 +10,7 @@ public static class IServiceCollectionExtensions
         services.AddTransient<IParticipantCreator, ParticipantCreator>();
         services.AddTransient<IParticipantLoader, ParticipantLoader>();
         services.AddTransient<IParticipantDeleter, ParticipantDeleter>();
+        services.AddTransient<IParticipantEditor, ParticipantEditor>();
         return services;
     }
 }

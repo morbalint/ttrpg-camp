@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ClientImports = TtrpgCamp.App.Client._Imports;
 using TtrpgCamp.App.Components;
 using TtrpgCamp.App.Db;
 using TtrpgCamp.App.Db.Entities;
+using TtrpgCamp.App.Db.Seed;
 using TtrpgCamp.App.Participants;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +14,7 @@ ConfigureServices(builder.Services, builder.Configuration);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-ConfigureRequestPipeline(app);
+await ConfigureRequestPipeline(app);
 
 app.Run();
 
@@ -31,21 +33,28 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
 
     var connectionString = configuration.GetConnectionString("main");
     services.AddDbContext<TtrpgCampDbContext>(dbBuilder => dbBuilder.UseNpgsql(connectionString));
-
-    services.AddDefaultIdentity<TtrpgCampUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    
+    services.AddIdentity<TtrpgCampUser, TtrpgCampRole>(options => options.SignIn.RequireConfirmedAccount = true)
         .AddEntityFrameworkStores<TtrpgCampDbContext>();
 
+    services.Configure<SeedDto>(configuration.GetSection("Seed"));
+    services.AddTransient<IAdminSeeder, AdminSeeder>();
+    
     services.AddParticipantServices();
+    services.AddRazorPages();
 }
 
-void ConfigureRequestPipeline(WebApplication webApp)
+async Task ConfigureRequestPipeline(WebApplication webApp)
 {
     if (webApp.Environment.IsDevelopment())
     {
         webApp.UseWebAssemblyDebugging();
         webApp.UseDeveloperExceptionPage();
         using var scope = webApp.Services.CreateScope();
-        scope.ServiceProvider.GetRequiredService<TtrpgCampDbContext>().Database.Migrate();
+        var dbContext = scope.ServiceProvider.GetRequiredService<TtrpgCampDbContext>();
+        dbContext.Database.Migrate();
+        var adminSeeder = scope.ServiceProvider.GetRequiredService<IAdminSeeder>();
+        await adminSeeder.SeedAdminAsync();
     }
     else
     {
