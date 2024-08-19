@@ -1,4 +1,5 @@
 ﻿@page "/weather"
+@rendermode InteractiveServer
 @using Microsoft.AspNetCore.Authorization
 @attribute [StreamRendering]
 @attribute [Authorize]
@@ -31,13 +32,15 @@ else
         {
             <tr>
                 <td>@forecast.Date.ToShortDateString()</td>
-                <td>@forecast.TemperatureC</td>
+                <td @onclick="OnClick" >@forecast.TemperatureC</td>
                 <td>@forecast.TemperatureF</td>
                 <td>@forecast.Summary</td>
             </tr>
         }
         </tbody>
     </table>
+    
+    <button @onclick="OnClick">Click this!</button>
 }
 
 @code {
@@ -58,6 +61,11 @@ else
         }).ToArray();
     }
 
+    void OnClick()
+    {
+        forecasts[0].TemperatureC++;
+    }
+    
     private class WeatherForecast
     {
         public DateOnly Date { get; set; }

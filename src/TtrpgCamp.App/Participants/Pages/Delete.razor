@@ -1,0 +1,96 @@
+@page "/participants/delete/{id:guid}"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Web
+@using TtrpgCamp.App.Db.Entities
+@using TtrpgCamp.App.Participants.Services
+
+@rendermode RenderMode.InteractiveServer
+
+@attribute [Authorize]
+
+@inject ILogger<Delete> Logger;
+@inject NavigationManager NavigationManager;
+@inject IParticipantLoader Loader;
+@inject IParticipantDeleter Deleter;
+
+
+<PageTitle>Delete Participant</PageTitle>
+
+@code {
+    private Participant? _model = new();
+
+    private bool _loading;
+    
+    [Parameter]
+    public Guid Id { get; set; }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _model = await Loader.GetParticipantAsync(Id);
+        await base.OnInitializedAsync();
+    }
+
+    private async void DeleteParticipant()
+    {
+        try
+        {
+            _loading = true;
+            await Deleter.DeleteAsync(_model!);
+            NavigationManager.NavigateTo("/participants/index");
+        }
+        catch (Exception e)
+        {
+            Logger.LogError(e, "failed to delete participant with ID='{id}'", Id);
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+}
+
+
+<h1>Delete Participant</h1>
+
+@if (_model == null)
+{
+    <p>Participant with ID = '@Id' not found!</p>
+}
+else
+{
+    <h3>Are you sure you want to delete this Participant?</h3>
+    <div>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                ID
+            </dt>
+            <dd class="col-sm-10">
+                @_model.Id
+            </dd>
+            <dt class="col-sm-2">
+                Name
+            </dt>
+            <dd class="col-sm-10">
+                @_model.Name
+            </dd>
+            <dt class="col-sm-2">
+                Email
+            </dt>
+            <dd class="col-sm-10">
+                @_model.Email
+            </dd>
+            <dt class="col-sm-2">
+                Phone
+            </dt>
+            <dd class="col-sm-10">
+                @_model.Phone
+            </dd>
+        </dl>
+
+        <button type="button" class="btn btn-danger" disabled="@_loading" @onclick="DeleteParticipant">Delete</button>
+    </div>
+}
+<div class="row mt-4">
+    <a href="participant/index">Back to List</a>
+</div>

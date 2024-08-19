@@ -1,0 +1,80 @@
+@page "/participants/index"
+
+@using Microsoft.AspNetCore.Authorization
+@using TtrpgCamp.App.Participants.Services
+@using Microsoft.AspNetCore.Components.Web
+@using TtrpgCamp.App.Participants.Dtos
+
+@attribute [Authorize]
+
+@inject IParticipantsLister Lister;
+
+@code {
+    private IList<ParticipantDetailDto>? _participants;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _participants = await Lister.GetAllParticipantsAsync(default);
+
+    }
+}
+
+<PageTitle>Participants</PageTitle>
+
+<h1>Participants</h1>
+
+<p>
+    <a href="participants/create" >Add New Participant</a>
+</p>
+
+@if (_participants == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Phone
+            </th>
+            <th>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in _participants)
+        {
+            <tr>
+                <td>
+                    @item.Id
+                </td>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.Email
+                </td>
+                <td>
+                    @item.Phone
+                </td>
+                <td>
+                    <a href="participants/edit/@item.Id">Edit</a> |
+                    <a href="participants/details/@item.Id">Details</a> |
+                    <a href="participants/delete/@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

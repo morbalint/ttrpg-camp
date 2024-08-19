@@ -1,0 +1,131 @@
+@page "/participants/create"
+@rendermode RenderMode.InteractiveServer
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Web
+@using TtrpgCamp.App.Participants.Dtos
+@using TtrpgCamp.App.Participants.Services
+
+@attribute [Authorize]
+
+@inject NavigationManager NavigationManager
+@inject ILogger<Create> Logger;
+@inject IParticipantCreator CreatorService;
+
+<PageTitle>Add Participant</PageTitle>
+
+@code {
+    private readonly ParticipantCreateDto _model = new();
+
+    private string? _nameError;
+    private string? _emailError;
+
+    private volatile bool _loading;
+    
+    private void OnNameChanged(ChangeEventArgs obj)
+    {
+        _model.Name = obj.Value?.ToString() ?? "";
+        ValidateName();
+    }
+
+    private bool ValidateName()
+    {
+        if (string.IsNullOrWhiteSpace(_model.Name))
+        {
+            _nameError = "Name thyself!";
+            return false;
+        }
+        _emailError = null;
+        return true;
+    }
+
+    private void OnEmailChanged(ChangeEventArgs obj)
+    {
+        _model.Email = obj.Value?.ToString() ?? "";
+        ValidateEmail();
+    }
+
+    private bool ValidateEmail()
+    {
+        if (string.IsNullOrWhiteSpace(_model.Email))
+        {
+            _emailError = "We stopped using pigeons to deliver our mail!";
+            return false;
+        }
+        _emailError = null;
+        return true;
+    }
+
+    private void OnPhoneChanged(ChangeEventArgs obj)
+    {
+        _model.Phone = obj.Value?.ToString() ?? "";
+    }
+
+    private bool ValidateModel()
+    {
+        var valid = true;
+        valid &= ValidateName();
+        valid &= ValidateEmail();
+        return valid;
+    }
+    
+    private async void OnSubmit()
+    {
+        try
+        {
+            _loading = true;
+            if (ValidateModel())
+            {
+                await CreatorService.CreateAsync(_model);
+                NavigationManager.NavigateTo("participants/index");
+            }
+        }
+        catch (Exception e)
+        {
+            Logger.LogError(e, "Failed to create participant {participant}", _model);
+        }
+        finally
+        {
+            _loading = false;
+        }
+    }
+}
+
+<h3>Add Participant</h3>
+
+<div class="row">
+    
+    <div class="col-md-4">
+        <form @onsubmit="OnSubmit">
+            @* <div class="text-danger"></div> *@
+            <div class="form-group">
+                <label class="control-label">Name</label>
+                <input class="form-control" @onchange="OnNameChanged"/>
+                @if (_nameError != null)
+                {
+                    <span class="text-danger">@_nameError</span>
+                }
+            </div>
+            <div class="form-group">
+                <label class="control-label">Email</label>
+                <input class="form-control" @onchange="OnEmailChanged" />
+                @if (_emailError != null)
+                {
+                    <span class="text-danger">@_emailError</span>
+                }
+            </div>
+            <div class="form-group">
+                <label class="control-label">Phone</label>
+                <input class="form-control" @onchange="OnPhoneChanged" />
+            </div>
+            <div class="form-group">
+                <button type="submit" disabled="@_loading" class="btn btn-primary">Add Participant</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<div>
+    <a href="participants/index">Back to List</a>
+</div>

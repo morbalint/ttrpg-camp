@@ -35,4 +35,17 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+        <Content Remove="Pages\Participants\Create.cshtml" />
+        <Content Remove="Pages\Participants\Delete.cshtml" />
+        <Content Remove="Pages\Participants\Details.cshtml" />
+        <Content Remove="Pages\Participants\Edit.cshtml" />
+        <Content Remove="Pages\Participants\Index.cshtml" />
+        <Compile Remove="Pages\Participants\Create.cshtml.cs" />
+        <Compile Remove="Pages\Participants\Delete.cshtml.cs" />
+        <Compile Remove="Pages\Participants\Details.cshtml.cs" />
+        <Compile Remove="Pages\Participants\Edit.cshtml.cs" />
+        <Compile Remove="Pages\Participants\Index.cshtml.cs" />
+    </ItemGroup>
+
 </Project>
