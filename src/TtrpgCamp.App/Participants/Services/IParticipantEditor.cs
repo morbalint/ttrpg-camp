@@ -4,5 +4,5 @@ namespace TtrpgCamp.App.Participants.Services;
 
 public interface IParticipantEditor
 {
-    Task Edit(Participant participant, CancellationToken token = default);
+    Task EditAsync(Participant participant, CancellationToken token = default);
 }

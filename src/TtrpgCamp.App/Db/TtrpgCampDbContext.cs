@@ -5,12 +5,20 @@ using TtrpgCamp.App.Db.Entities;
 
 namespace TtrpgCamp.App.Db;
 
-public class TtrpgCampDbContext(DbContextOptions<TtrpgCampDbContext> options) : 
-    IdentityDbContext<TtrpgCampUser, TtrpgCampRole, string>(options)
+public class TtrpgCampDbContext : 
+    IdentityDbContext<TtrpgCampUser, TtrpgCampRole, string>
 {
-    public DbSet<Participant> Participants { get; set; }
+    public TtrpgCampDbContext()
+    {
+    }
+
+    public TtrpgCampDbContext(DbContextOptions<TtrpgCampDbContext> options) : base(options)
+    {
+    }
+
+    public virtual DbSet<Participant> Participants { get; set; }
     
-    public DbSet<Game> Games { get; set; }
+    public virtual DbSet<Game> Games { get; set; }
     
-    public DbSet<GamePlayers> GamePlayers { get; set; }
+    public virtual DbSet<GamePlayers> GamePlayers { get; set; }
 }

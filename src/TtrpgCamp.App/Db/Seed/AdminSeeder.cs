@@ -40,7 +40,7 @@ public class AdminSeeder(
                 return false;
             }
         }
-        
+
         var adminRole = roleManager.Roles.FirstOrDefault(x => x.Name == AdminRoleName);
         if (adminRole == null)
         {
@@ -52,7 +52,7 @@ public class AdminSeeder(
                 return false;
             }
         }
-        
+
         if (!await userManager.IsInRoleAsync(adminUser, AdminRoleName))
         {
             var addToRoleResult = await userManager.AddToRoleAsync(adminUser, AdminRoleName);
@@ -61,7 +61,7 @@ public class AdminSeeder(
                 logger.LogError("Failed to add admin user to the admin role: {errors}", addToRoleResult.Errors);
                 return false;
             }
-        }        
+        }
         
         return true;
     }

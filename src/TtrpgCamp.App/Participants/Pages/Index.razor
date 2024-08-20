@@ -3,9 +3,10 @@
 @using Microsoft.AspNetCore.Authorization
 @using TtrpgCamp.App.Participants.Services
 @using Microsoft.AspNetCore.Components.Web
+@using TtrpgCamp.App.Db.Seed
 @using TtrpgCamp.App.Participants.Dtos
 
-@attribute [Authorize]
+@attribute [Authorize(Roles = AdminSeeder.AdminRoleName)]
 
 @inject IParticipantsLister Lister;
 
@@ -15,7 +16,6 @@
     protected override async Task OnInitializedAsync()
     {
         _participants = await Lister.GetAllParticipantsAsync(default);
-
     }
 }
 
@@ -70,7 +70,6 @@ else
                 </td>
                 <td>
                     <a href="participants/edit/@item.Id">Edit</a> |
-                    <a href="participants/details/@item.Id">Details</a> |
                     <a href="participants/delete/@item.Id">Delete</a>
                 </td>
             </tr>

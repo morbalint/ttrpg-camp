@@ -1,5 +1,6 @@
 ﻿@using System.Security.Claims
 @using Microsoft.AspNetCore.Components.Authorization
+@using TtrpgCamp.App.Db.Seed
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 @code {
@@ -42,11 +43,14 @@
                     <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
                 </NavLink>
             </div>
-            <div class="nav-item px-3">
-                <NavLink class="nav-link" href="participants/index">
-                    <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Participants
-                </NavLink>
-            </div>
+            @if (ClaimsPrincipalUser.IsInRole(AdminSeeder.AdminRoleName))
+            {
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="participants/index">
+                        <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Participants
+                    </NavLink>
+                </div>
+            }
         }
     </nav>
 </div>

@@ -3,10 +3,11 @@
 
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Web
+@using TtrpgCamp.App.Db.Seed
 @using TtrpgCamp.App.Participants.Dtos
 @using TtrpgCamp.App.Participants.Services
 
-@attribute [Authorize(Roles = "admin")]
+@attribute [Authorize(Roles = AdminSeeder.AdminRoleName)]
 
 @inject NavigationManager NavigationManager
 @inject ILogger<Create> Logger;
