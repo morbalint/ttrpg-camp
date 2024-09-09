@@ -5,6 +5,7 @@ using TtrpgCamp.App.Components;
 using TtrpgCamp.App.Db;
 using TtrpgCamp.App.Db.Entities;
 using TtrpgCamp.App.Db.Seed;
+using TtrpgCamp.App.Games;
 using TtrpgCamp.App.Participants;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,6 +42,7 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
     services.AddTransient<IAdminSeeder, AdminSeeder>();
     
     services.AddParticipantServices();
+    services.AddGameServices();
     services.AddRazorPages();
 }
 

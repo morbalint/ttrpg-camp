@@ -48,8 +48,4 @@
         <Compile Remove="Pages\Participants\Index.cshtml.cs" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Games\" />
-    </ItemGroup>
-
 </Project>

@@ -1,0 +1,97 @@
+@page "/games/index"
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Web
+@using TtrpgCamp.App.Db.Seed
+@using TtrpgCamp.App.Games.Dtos
+@using TtrpgCamp.App.Games.Services
+
+@attribute [Authorize(Roles = AdminSeeder.AdminRoleName)]
+
+@inject IGamesLister Lister;
+
+@code {
+    private IList<GameListDto>? _games;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _games = await Lister.ListGamesAsync();
+    }
+}
+
+<PageTitle>Games</PageTitle>
+
+<h1>Games</h1>
+
+<p>
+    <a href="participants/create" >Add New Participant</a>
+</p>
+
+@if (_games == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                Day
+            </th>
+            <th>
+                Players
+            </th>
+            <th>
+                GM Name
+            </th>
+            <th>
+                GM Email
+            </th>
+            <th>
+                GM Phone
+            </th>
+            <th>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in _games)
+        {
+            <tr>
+                <td>
+                    @item.Id
+                </td>
+                <td>
+                    @item.Title
+                </td>
+                <td>
+                    @item.StartAt.Date.DayOfWeek.ToString()
+                </td>
+                <td>
+                    @item.ActPlayers / @item.MaxPlayers
+                </td>
+                <td>
+                    @item.GameMasterName
+                </td>
+                <td>
+                    @item.GameMasterEmail
+                </td>
+                <td>
+                    @item.GameMasterPhone
+                </td>
+                <td>
+                    <a href="games/edit/@item.Id">Edit</a> |
+                    <a href="games/delete/@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

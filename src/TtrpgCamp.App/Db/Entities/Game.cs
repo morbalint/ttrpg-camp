@@ -26,4 +26,6 @@ public class Game
     public string? ImagePath { get; set; }
     
     public string? Link { get; set; }
+    
+    public HashSet<GamePlayers> Players { get; set; } = [];
 }

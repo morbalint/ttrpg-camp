@@ -9,6 +9,7 @@
         <IsTestProject>true</IsTestProject>
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <NoWarn>CA1859</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>

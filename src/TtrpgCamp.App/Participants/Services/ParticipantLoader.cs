@@ -9,7 +9,7 @@ public class ParticipantLoader(TtrpgCampDbContext dbContext) : IParticipantLoade
 {
     public async Task<Participant?> GetParticipantAsync(Guid id, CancellationToken token)
     {
-        return await dbContext.Participants.FindAsync([id], cancellationToken: token);
+        return await dbContext.Participants.FirstOrDefaultAsync(x => x.Id == id, token);
     }
 
     public async Task<ParticipantDetailDto?> GetReadonlyParticipantAsync(Guid id, CancellationToken token)
