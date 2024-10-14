@@ -4,9 +4,9 @@
     "net8.0": {
       "Microsoft.AspNetCore.Components.WebAssembly.Server": {
         "type": "Direct",
-        "requested": "[8.0.8, )",
-        "resolved": "8.0.8",
-        "contentHash": "A35HWbJDullxT0j6kw6lpl5F3c6C3ZxMj1lr5qMQhhvQG/vxVbLwSHFn+n4VajC5ohowZZtM4olbXIpikWE0Ow=="
+        "requested": "[8.0.10, )",
+        "resolved": "8.0.10",
+        "contentHash": "jd/s5ZC4/FGzqyMrnZ5WPZYBx0odfqstlevGESAqakhN9ozalat2PEo8ECgYK7768XdCvifcEO0nrlvAiPQirg=="
       },
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
         "type": "Direct",
